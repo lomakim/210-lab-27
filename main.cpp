@@ -1,7 +1,12 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <tuple>
 using namespace std;
+
+// I don't understand how to access the variables within the tuple as I
+// have never worked with them. So I am cutting my losses for the night.
+// Love the animal crossing reference!
 
 int main() {
     // declarations
@@ -10,15 +15,16 @@ int main() {
     // insert elements into the map
     // note how the right-hand side of the assignment are the vector elements
     villagerInfo["Audie"] = {0, "Wolf", "foxtrot"};
-    villagerInfo["Raymond"] = {"Black", "Cat", "crisp"};
-    villagerInfo.insert({"Marshal", {"Blue", "Squirrel", "sulky"}});
+    villagerInfo["Raymond"] = {8, "Cat", "crisp"};
+    villagerInfo.insert({"Marshal", {10, "Squirrel", "sulky"}});
 
     // access the map using a range-based for loop
     cout << "Villagers and their catchphrases (range-based for loop):" << endl;
-    for (auto tuple : villagerInfo) {
-        cout << tuple.first << ": ";
-        for (auto catchphrase : tuple.second)
-            cout << catchphrase << " ";
+    for (auto pair : villagerInfo) {
+        cout << pair.first <<" ";
+        for (const auto& [level , species, phrase] : pair.second) {
+            cout << "[" << level << ", " << species << ", " << phrase << endl;
+        }
         cout << endl;
     }
 
@@ -34,24 +40,24 @@ int main() {
     }
 
     // delete an element
-    villagerColors.erase("Raymond");
+    villagerInfo.erase("Raymond");
 
     // search for an element using .find() to avoid errors
     string searchKey = "Audie";
-    auto it = villagerColors.find(searchKey);
-    if (it != villagerColors.end()) {  // the iterator points to beyond the end of the map
+    auto it = villagerInfo.find(searchKey);
+    if (it != villagerInfo.end()) {  // the iterator points to beyond the end of the map
                                        // if searchKey is not found
-        cout << "\nFound " << searchKey << "'s favorite colors: ";
-        for (auto color : it->second)  // range loop to traverse the value/vector
-            cout << color << " ";
+        cout << "\nFound " << searchKey << "'s info: ";
+        for (auto info : it->second)  // range loop to traverse the value/vector
+            cout << info << " ";
         cout << endl;
     } else
         cout << endl << searchKey << " not found." << endl;
 
     // report size, clear, report size again to confirm map operations
-    cout << "\nSize before clear: " << villagerColors.size() << endl;
-    villagerColors.clear();
-    cout << "Size after clear: " << villagerColors.size() << endl;
+    cout << "\nSize before clear: " << villagerInfo.size() << endl;
+    villagerInfo.clear();
+    cout << "Size after clear: " << villagerInfo.size() << endl;
 
     return 0;
 }
